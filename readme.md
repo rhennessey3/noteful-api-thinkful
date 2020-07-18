@@ -21,3 +21,14 @@ Complete the following steps to start a new project (NEW-PROJECT-NAME):
 ## Deploying
 
 When your new project is fully cooked and for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+
+## knex database
+
+
+## Migration
+* Run `npm run migrate -- 0` to go back to version 0
+* Run `run migrate -- 1` to rollback to version 1
+* Run `npm run migrate` if we start on version 0, will run both do scripts taking us to version 2
+
+## Seeding database 
+psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql
