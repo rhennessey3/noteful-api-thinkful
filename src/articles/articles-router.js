@@ -38,7 +38,7 @@ articlesRouter
                 error: { message: `Missing 'style' in request body` }
             })
         }
-
+        newArticle.author = author
         ArticlesService.insertArticle(
             req.app.get('db'),
             newArticle
@@ -77,6 +77,7 @@ articlesRouter
             title: xss(res.article.title), // sanitize title
             content: xss(res.article.content), // sanitize content
             date_published: res.article.date_published,
+            author: article.author,
         })
         const knexInstance = req.app.get('db')
 
@@ -104,7 +105,6 @@ articlesRouter
                 }
             })
         }
-
         ArticlesService.updateArticle(
             req.app.get('db'),
             req.params.article_id,

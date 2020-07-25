@@ -6,7 +6,8 @@ const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const app = express()
 const articlesRouter = require('./articles/articles-router')
-
+const usersRouter = require('./users/users-router')
+const commentsRouter = require('./comments/comments-router')
 const morganOption = (NODE_ENV === 'production')
     ? 'tiny'
     : 'common';
@@ -14,6 +15,10 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
+
+app.use('/api/users', usersRouter)
+
+app.use('/api/comments', commentsRouter)
 
 app.use('/api/articles', articlesRouter)
 
