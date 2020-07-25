@@ -7,3 +7,5 @@ CREATE TABLE blogful_comments (
     user_id INTEGER
         REFERENCES blogful_users(id) ON DELETE CASCADE NOT NULL
 );
+
+TRUNCATE blogful_articles, blogful_users, blogful_comments RESTART IDENTITY CASCADE;
