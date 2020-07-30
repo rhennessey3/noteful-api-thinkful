@@ -2,6 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const { makeArticlesArray, makeMaliciousArticle } = require('./articles.fixtures')
 const { makeUsersArray } = require('./users.fixtures')
+const { TEST_DB_URL } = require('../src/config')
 
 describe('Articles Endpoints', function () {
     let db
@@ -10,7 +11,7 @@ describe('Articles Endpoints', function () {
 
         db = knex({
             client: 'pg',
-            connection: process.env.TEST_DB_URL,
+            connection: TEST_DB_URL,
         })
         app.set('db', db)
 
@@ -153,7 +154,8 @@ describe('Articles Endpoints', function () {
             const newArticle = {
                 title: 'Test new article',
                 style: 'Listicle',
-                content: 'Test new article content...'
+                content: 'Test new article content...',
+                author: '1'
             }
             return supertest(app)
                 .post('/api/articles')

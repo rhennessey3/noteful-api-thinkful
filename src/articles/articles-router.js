@@ -18,8 +18,8 @@ articlesRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { title, content, style } = req.body
-        const newArticle = { title, content, style }
+        const { title, content, style, author } = req.body
+        const newArticle = { title, content, style, author }
 
         if (!title) {
             return res.status(400).json({
@@ -38,6 +38,13 @@ articlesRouter
                 error: { message: `Missing 'style' in request body` }
             })
         }
+
+        if (!author) {
+            return res.status(400).json({
+                error: { message: `Missing 'author' in request body` }
+            })
+        }
+
         newArticle.author = author
         ArticlesService.insertArticle(
             req.app.get('db'),
@@ -71,16 +78,16 @@ articlesRouter
             .catch(next)
     })
     .get((req, res, next) => {
+
         res.json({
             id: res.article.id,
             style: res.article.style,
             title: xss(res.article.title), // sanitize title
             content: xss(res.article.content), // sanitize content
             date_published: res.article.date_published,
-            author: article.author,
+            author: res.article.author,
         })
-        const knexInstance = req.app.get('db')
-
+        next()
     })
     .delete((req, res, next) => {
         ArticlesService.deleteArticle(

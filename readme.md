@@ -31,4 +31,4 @@ When your new project is fully cooked and for deployment, add a new Heroku appli
 * Run `npm run migrate` if we start on version 0, will run both do scripts taking us to version 2
 
 ## Seeding database 
-psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql
+psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql# noteful-api
