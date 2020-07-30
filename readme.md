@@ -32,3 +32,4 @@ When your new project is fully cooked and for deployment, add a new Heroku appli
 
 ## Seeding database 
 psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql# noteful-api
+# noteful-api-thinkful

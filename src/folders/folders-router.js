@@ -1,25 +1,25 @@
 const path = require('path')
 const express = require('express')
 const xss = require('xss')
-const ArticlesService = require('./articles-service')
+const FoldersService = require('./folders-service')
 
-const articlesRouter = express.Router()
+const foldersRouter = express.Router()
 const jsonParser = express.json()
 
-articlesRouter
+foldersRouter
     .route('/')
     .get((req, res, next) => {
-        ArticlesService.getAllArticles(
+        FoldersService.getAllFolders(
             req.app.get('db')
         )
-            .then(articles => {
-                res.json(articles)
+            .then(folders => {
+                res.json(folders)
             })
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
         const { title, content, style, author } = req.body
-        const newArticle = { title, content, style, author }
+        const newFolder = { title, content, style, author }
 
         if (!title) {
             return res.status(400).json({
@@ -45,34 +45,34 @@ articlesRouter
             })
         }
 
-        newArticle.author = author
-        ArticlesService.insertArticle(
+        newFolder.author = author
+        FoldersService.insertFolder(
             req.app.get('db'),
-            newArticle
+            newFolder
         )
-            .then(article => {
+            .then(folder => {
                 res
                     .status(201)
-                    .location(path.posix.join(req.originalUrl, `/${article.id}`))
-                    .json(article)
+                    .location(path.posix.join(req.originalUrl, `/${folder.id}`))
+                    .json(folder)
             })
             .catch(next)
     })
 
-articlesRouter
-    .route('/:article_id')
+foldersRouter
+    .route('/:folder_id')
     .all((req, res, next) => {
-        ArticlesService.getById(
+        FoldersService.getById(
             req.app.get('db'),
-            req.params.article_id
+            req.params.folder_id
         )
-            .then(article => {
-                if (!article) {
+            .then(folder => {
+                if (!folder) {
                     return res.status(404).json({
-                        error: { message: `Article doesn't exist` }
+                        error: { message: `Folder doesn't exist` }
                     })
                 }
-                res.article = article // save the article for the next middleware
+                res.folder = folder // save the folder for the next middleware
                 next() // don't forget to call next so the next middleware happens!
             })
             .catch(next)
@@ -80,19 +80,19 @@ articlesRouter
     .get((req, res, next) => {
 
         res.json({
-            id: res.article.id,
-            style: res.article.style,
-            title: xss(res.article.title), // sanitize title
-            content: xss(res.article.content), // sanitize content
-            date_published: res.article.date_published,
-            author: res.article.author,
+            id: res.folder.id,
+            style: res.folder.style,
+            title: xss(res.folder.title), // sanitize title
+            content: xss(res.folder.content), // sanitize content
+            date_published: res.folder.date_published,
+            author: res.folder.author,
         })
         next()
     })
     .delete((req, res, next) => {
-        ArticlesService.deleteArticle(
+        FoldersService.deletefolder(
             req.app.get('db'),
-            req.params.article_id
+            req.params.folder_id
         )
             .then(() => {
                 res.status(204).end()
@@ -102,9 +102,9 @@ articlesRouter
 
     .patch(jsonParser, (req, res, next) => {
         const { title, content, style } = req.body
-        const articleToUpdate = { title, content, style }
+        const folderToUpdate = { title, content, style }
 
-        const numberOfValues = Object.values(articleToUpdate).filter(Boolean).length
+        const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length
         if (numberOfValues === 0) {
             return res.status(400).json({
                 error: {
@@ -112,10 +112,10 @@ articlesRouter
                 }
             })
         }
-        ArticlesService.updateArticle(
+        FoldersService.updateFolder(
             req.app.get('db'),
-            req.params.article_id,
-            articleToUpdate
+            req.params.folder_id,
+            folderToUpdate
         )
             .then(numRowsAffected => {
                 res.status(204).end()
@@ -123,4 +123,4 @@ articlesRouter
             .catch(next)
     })
 
-module.exports = articlesRouter
+module.exports = foldersRouter

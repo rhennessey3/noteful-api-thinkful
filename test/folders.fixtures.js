@@ -1,4 +1,4 @@
-function makeArticlesArray() {
+function makeFoldersArray() {
     return [
         {
             id: 1,
@@ -35,10 +35,10 @@ function makeArticlesArray() {
     ];
 }
 
-function makeMaliciousArticle() {
+function makeMaliciousFolder() {
 
     return {
-        maliciousArticle: {
+        maliciousFolder: {
             id: 1,
             date_published: '2029-01-22T16:28:32.615Z',
             title: 'First test post!',
@@ -46,7 +46,7 @@ function makeMaliciousArticle() {
             content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
             author: 1
         },
-        expectedArticle: {
+        expectedFolder: {
             id: 1,
             date_published: '2029-01-22T16:28:32.615Z',
             title: 'First test post!',
@@ -58,6 +58,6 @@ function makeMaliciousArticle() {
 }
 
 module.exports = {
-    makeArticlesArray,
-    makeMaliciousArticle,
+    makeFoldersArray,
+    makeMaliciousFolder,
 }
