@@ -43,7 +43,7 @@ describe('Folders Endpoints', function () {
                     .then(() => {
                         return db
                             .into('noteful_folders')
-                            .insert(testfolders)
+                            .insert(testFolders)
                     })
             })
 
