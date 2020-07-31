@@ -71,7 +71,7 @@ describe('Folders Endpoints', function () {
 
             it('removes XSS attack content', () => {
                 return supertest(app)
-                    .get(`/api/folder`)
+                    .get('/api/folders')
                     .expect(200)
                     .expect(res => {
                         expect(res.body[0].title).to.eql(expectedFolder.title)
@@ -126,7 +126,7 @@ describe('Folders Endpoints', function () {
                     .then(() => {
                         return db
                             .into('noteful_folders')
-                            .insert([maliciousfolder])
+                            .insert([maliciousFolder])
                     })
             })
 
@@ -166,7 +166,7 @@ describe('Folders Endpoints', function () {
                     expect(res.body.style).to.eql(newFolder.style)
                     expect(res.body.content).to.eql(newFolder.content)
                     expect(res.body).to.have.property('id')
-                    expect(res.headers.location).to.eql(`/api/Folders/${res.body.id}`)
+                    expect(res.headers.location).to.eql(`/api/folders/${res.body.id}`)
                     const expected = new Intl.DateTimeFormat('en-US').format(new Date())
                     const actual = new Intl.DateTimeFormat('en-US').format(new Date(res.body.date_published))
                     expect(actual).to.eql(expected)
@@ -191,7 +191,7 @@ describe('Folders Endpoints', function () {
                 delete newFolder[field]
 
                 return supertest(app)
-                    .post('/api/folder')
+                    .post('/api/folders')
                     .send(newFolder)
                     .expect(400, {
                         error: { message: `Missing '${field}' in request body` }
