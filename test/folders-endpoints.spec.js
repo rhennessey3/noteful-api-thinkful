@@ -153,9 +153,7 @@ describe('Folders Endpoints', function () {
         it(`creates an folder, responding with 201 and the new folder`, () => {
             const newFolder = {
                 title: 'Test new folder',
-                style: 'Listicle',
-                content: 'Test new folder content...',
-                author: '1'
+               
             }
             return supertest(app)
                 .post('/api/folders')
@@ -163,8 +161,6 @@ describe('Folders Endpoints', function () {
                 .expect(201)
                 .expect(res => {
                     expect(res.body.title).to.eql(newFolder.title)
-                    expect(res.body.style).to.eql(newFolder.style)
-                    expect(res.body.content).to.eql(newFolder.content)
                     expect(res.body).to.have.property('id')
                     expect(res.headers.location).to.eql(`/api/folders/${res.body.id}`)
                     const expected = new Intl.DateTimeFormat('en-US').format(new Date())
@@ -183,8 +179,7 @@ describe('Folders Endpoints', function () {
         requiredFields.forEach(field => {
             const newFolder = {
                 title: 'Test new folder',
-                style: 'Listicle',
-                content: 'Test new folder content...'
+                
             }
 
             it(`responds with 400 and an error message when the '${field}' is missing`, () => {
@@ -207,7 +202,6 @@ describe('Folders Endpoints', function () {
                 .expect(201)
                 .expect(res => {
                     expect(res.body.title).to.eql(expectedFolder.title)
-                    expect(res.body.content).to.eql(expectedFolder.content)
                 })
         })
     })
@@ -281,8 +275,6 @@ describe('Folders Endpoints', function () {
                 const idToUpdate = 2
                 const updateFolder = {
                     title: 'updated folder title',
-                    style: 'Interview',
-                    content: 'updated folder content',
                 }
                 const expectedFolder = {
                     ...testFolders[idToUpdate - 1],

@@ -8,10 +8,11 @@ const jsonParser = express.json()
 
 const serializeNote = note => ({
     id: note.id,
-    text: xss(note.text),
+    title: xss(note.title),
+    content: xss(note.content),
     date_noted: note.date_noted,
     folder_id: note.folder_id,
-    user_id: note.user_id
+
 })
 
 notesRouter
@@ -25,8 +26,8 @@ notesRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { text, folder_id, user_id, date_noted } = req.body
-        const newNote = { text, folder_id, user_id }
+        const { title, content, folder_id, date_noted } = req.body
+        const newNote = { title, content, folder_id }
 
         for (const [key, value] of Object.entries(newNote))
             if (value == null)
@@ -67,6 +68,8 @@ notesRouter
             })
             .catch(next)
     })
+
+
     .get((req, res, next) => {
         res.json(serializeNote(res.note))
     })
@@ -81,14 +84,14 @@ notesRouter
             .catch(next)
     })
     .patch(jsonParser, (req, res, next) => {
-        const { text, date_noted } = req.body
-        const noteToUpdate = { text, date_noted }
+        const { title, content, date_noted } = req.body
+        const noteToUpdate = { title, content, date_noted }
 
         const numberOfValues = Object.values(noteToUpdate).filter(Boolean).length
         if (numberOfValues === 0)
             return res.status(400).json({
                 error: {
-                    message: `Request body must contain either 'text' or 'date_noted'`
+                    message: `Request body must contain either 'title' or 'date_noted'`
                 }
             })
 

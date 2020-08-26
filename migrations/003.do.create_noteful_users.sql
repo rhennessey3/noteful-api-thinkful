@@ -7,7 +7,7 @@ CREATE TABLE noteful_users (
   date_created TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-ALTER TABLE noteful_folders
-  ADD COLUMN
-    author INTEGER REFERENCES noteful_users(id)
-    ON DELETE SET NULL;
+-- ALTER TABLE noteful_notes
+--   ADD COLUMN
+--     author INTEGER REFERENCES noteful_users(id)
+--     ON DELETE SET NULL;

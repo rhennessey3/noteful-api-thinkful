@@ -18,8 +18,8 @@ foldersRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { title, content, style, author } = req.body
-        const newFolder = { title, content, style, author }
+        const { title} = req.body
+        const newFolder = { title }
 
         if (!title) {
             return res.status(400).json({
@@ -27,25 +27,8 @@ foldersRouter
             })
         }
 
-        if (!content) {
-            return res.status(400).json({
-                error: { message: `Missing 'content' in request body` }
-            })
-        }
 
-        if (!style) {
-            return res.status(400).json({
-                error: { message: `Missing 'style' in request body` }
-            })
-        }
-
-        if (!author) {
-            return res.status(400).json({
-                error: { message: `Missing 'author' in request body` }
-            })
-        }
-
-        newFolder.author = author
+      
         FoldersService.insertFolder(
             req.app.get('db'),
             newFolder
@@ -81,11 +64,11 @@ foldersRouter
 
         res.json({
             id: res.folder.id,
-            style: res.folder.style,
+            // style: res.folder.style,
             title: xss(res.folder.title), // sanitize title
-            content: xss(res.folder.content), // sanitize content
-            date_published: res.folder.date_published,
-            author: res.folder.author,
+            // content: xss(res.folder.content), // sanitize content
+            // date_published: res.folder.date_published,
+            // author: res.folder.author,
         })
         next()
     })
@@ -101,8 +84,8 @@ foldersRouter
     })
 
     .patch(jsonParser, (req, res, next) => {
-        const { title, content, style } = req.body
-        const folderToUpdate = { title, content, style }
+        const {title} = req.body
+        const folderToUpdate = { title }
 
         const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length
         if (numberOfValues === 0) {
